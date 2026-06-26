@@ -6,7 +6,7 @@ export default function Envelope({ onOpen }) {
   const handleOpen = () => {
     if (opening) return
     setOpening(true)
-    setTimeout(onOpen, 900)
+    setTimeout(onOpen, 650)
   }
 
   return (
