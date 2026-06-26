@@ -1,0 +1,402 @@
+:root {
+  --lilac: #c8a2c8;
+  --lilac-deep: #9b7ebd;
+  --lilac-soft: #e6d7f2;
+  --rose: #e8b4d4;
+  --gold: #d4af7f;
+  --plum: #4a3556;
+  --bg1: #f5f0fa;
+  --bg2: #faecff;
+  --ink: #3b2a47;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(1200px 800px at 50% -12%, #ffffff 0%, transparent 58%),
+    radial-gradient(820px 680px at 8% 112%, rgba(232, 180, 212, 0.55) 0%, transparent 55%),
+    radial-gradient(900px 760px at 96% 6%, rgba(200, 162, 200, 0.5) 0%, transparent 55%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+}
+
+/* ---------- Floating petals / hearts ---------- */
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  bottom: -12vh;
+  will-change: transform, opacity;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  filter: drop-shadow(0 3px 5px rgba(120, 80, 150, 0.25));
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--o, 0.8);
+  }
+  92% {
+    opacity: var(--o, 0.8);
+  }
+  100% {
+    transform: translate3d(var(--drift, 0px), -116vh, 0) rotate(420deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- Envelope scene ---------- */
+.envelope-scene {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+.env-intro {
+  animation: fadeDown 1s ease both;
+}
+
+.for-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--lilac-deep);
+  opacity: 0.8;
+}
+
+.env-name {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(2.7rem, 9vw, 4.6rem);
+  color: var(--plum);
+  line-height: 1.05;
+  margin-top: 0.18em;
+  background: linear-gradient(135deg, var(--plum), var(--lilac-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.envelope {
+  position: relative;
+  width: clamp(260px, 70vw, 360px);
+  height: clamp(180px, 48vw, 250px);
+  filter: drop-shadow(0 30px 40px rgba(110, 80, 140, 0.35));
+  transition: transform 0.8s ease, opacity 0.8s ease;
+  animation: floaty 5s ease-in-out infinite;
+}
+
+.envelope.opening {
+  transform: translateY(-34px) scale(0.9);
+  opacity: 0;
+}
+
+.env-pocket {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #dcc4ef, #b79bdb);
+  clip-path: polygon(0 0, 50% 40%, 100% 0, 100% 100%, 0 100%);
+  z-index: 2;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.env-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(160deg, #c9a9e6, #a98ad0);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transform: rotateX(0deg);
+  transition: transform 0.75s cubic-bezier(0.6, 0.05, 0.3, 1);
+  z-index: 3;
+  backface-visibility: hidden;
+  box-shadow: inset 0 -2px 4px rgba(120, 80, 150, 0.25);
+}
+
+.envelope.opening .env-flap {
+  transform: rotateX(180deg);
+}
+
+.env-seal {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  z-index: 4;
+  animation: pulse 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(120, 60, 140, 0.4));
+}
+
+.open-btn {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  color: #fff;
+  padding: 15px 36px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--lilac-deep), var(--rose));
+  box-shadow: 0 14px 32px rgba(155, 126, 189, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.open-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 20px 42px rgba(155, 126, 189, 0.6);
+}
+
+.open-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.env-hint {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--lilac-deep);
+  opacity: 0.7;
+}
+
+/* ---------- Message card ---------- */
+.card-scene {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+}
+
+.message-card {
+  position: relative;
+  max-width: 620px;
+  width: 100%;
+  padding: clamp(28px, 6vw, 56px);
+  border-radius: 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.74));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 30px 70px rgba(120, 80, 150, 0.3),
+    0 4px 14px rgba(120, 80, 150, 0.15);
+  overflow: hidden;
+  animation: cardIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) both, breathe 7s ease-in-out 1s infinite;
+}
+
+.message-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  width: 240px;
+  height: 240px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(232, 180, 212, 0.55), transparent 70%);
+  pointer-events: none;
+}
+
+.card-eyebrow {
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--lilac-deep);
+  opacity: 0.8;
+}
+
+.card-name {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  text-align: center;
+  font-size: clamp(2.3rem, 8vw, 3.5rem);
+  margin-top: 0.1em;
+  background: linear-gradient(135deg, var(--plum), var(--lilac-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 20px 0 24px;
+  color: var(--lilac);
+}
+
+.card-divider::before,
+.card-divider::after {
+  content: '';
+  height: 1px;
+  width: 56px;
+  background: linear-gradient(90deg, transparent, var(--lilac), transparent);
+}
+
+.card-body {
+  font-size: clamp(1.05rem, 2.6vw, 1.28rem);
+  line-height: 1.95;
+  color: var(--ink);
+  white-space: pre-line;
+  text-align: left;
+  min-height: 11em;
+}
+
+.cursor {
+  color: var(--lilac-deep);
+  animation: blink 1s steps(1) infinite;
+}
+
+.skip-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--lilac-deep);
+  opacity: 0.6;
+  margin-top: 20px;
+  animation: blink 1.6s ease-in-out infinite;
+}
+
+.card-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 26px;
+  font-size: 1.4rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---------- Mute button ---------- */
+.mute-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(155, 126, 189, 0.4);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(120, 80, 150, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.mute-btn:hover {
+  transform: scale(1.08);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal,
+  .envelope,
+  .message-card,
+  .env-seal,
+  .card-foot {
+    animation: none !important;
+  }
+}
